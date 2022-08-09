@@ -15,15 +15,12 @@ public class gameMain {
         } while(num > 4 || num < 2) ;
         System.out.printf("Your choose: %d \n", num);
         in.close();
-
+        in.reset();
 
         Player player1 = new Player();
         Player player2 = new Player();
 
         System.out.println("Player1 enter your name: ");
-        while (!in.hasNextLine()){
-            in.next();
-        }
         player1.name = in.nextLine();
         System.out.println("Player2 enter your name: ");
         while (!in.hasNextLine()){
