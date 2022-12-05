@@ -1,36 +1,56 @@
 import java.util.Scanner;
 
+
 public class gameMain {
     public static void main(String[] args) {
-        System.out.println("Game is started!! Let's play");
-
         Scanner in = new Scanner(System.in);
-        int num;
+
+        int AmountOfPlayers = 5;
+
+        Player[] players = new Player[AmountOfPlayers];
+        Table table = new Table();
+
+
+        int j = 0;
         do {
-            System.out.println("Choose how many player would be play (2-4)");
-            while (!in.hasNextInt()) {
-                in.next();
-            }
-            num = in.nextInt();
-        } while(num > 4 || num < 2) ;
-        System.out.printf("Your choose: %d \n", num);
-        in.close();
-        in.reset();
+            players[j] = new Player();
+            System.out.printf("Enter name of %d player\n", j + 1);
+            players[j].setName(in.next());
+            j++;
+        } while(j < AmountOfPlayers);
 
-        Player player1 = new Player();
-        Player player2 = new Player();
+        j = 0;  do {
+            System.out.printf("%d) %s bank acc: %d \n", j + 1, players[j].getName(), players[j].getBank());
+            j++;
+        } while(j < AmountOfPlayers);  j = 0;
 
-        System.out.println("Player1 enter your name: ");
-        player1.name = in.nextLine();
-        System.out.println("Player2 enter your name: ");
-        while (!in.hasNextLine()){
-            in.next();
+        Deck deck = new Deck();
+        deck.shuffleIt();
+        deck.shuffleIt();
+        deck.shuffleIt();
+
+        // Раздать карты
+        for (Player player : players) {
+            Card[] arm = new Card[2];
+            arm[0] = deck.takeCardFromDeck();
+            arm[1] = deck.takeCardFromDeck();
+            player.setArm(arm);
         }
-        player2.name = in.nextLine();
-        in.close();
 
-        System.out.printf("%s bank acc: %d \n", player1.name, player1.bank);
-        System.out.printf("%s bank acc: %d \n", player2.name, player2.bank);
+        for (Player player : players) {
+            System.out.printf("\n%d) %s \n", j + 1, player.getName());
+            player.arm[0].print();
+            System.out.print(" ");
+            player.arm[1].print();
+            j++;
+        }
 
+        // Поставить первую ставку
+
+        // Положить на стол три карты
+        table.putToBoard(deck.takeCardFromDeck());
+        table.putToBoard(deck.takeCardFromDeck());
+        table.putToBoard(deck.takeCardFromDeck());
+        table.printBoard();
     }
 }
