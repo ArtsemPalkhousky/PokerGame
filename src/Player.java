@@ -1,11 +1,10 @@
 public class Player {
-    String name;
+    String name = "BOT";
     int bank = 100;
-    Card[] arm = new Card[2];
+    Card[] armCards = new Card[2];
+    Card[] toCountCards = new Card[5+2];
 
-    public Player(){
-
-    }
+    public Player() {  }
 
     public void setBank(int bank) {
         this.bank = bank;
@@ -15,8 +14,14 @@ public class Player {
         this.name = name;
     }
 
-    public void setArm(Card[] arm) {
-        this.arm = arm;
+    public void setArmCards(Card[] armCards) { this.armCards = armCards; }
+
+    public void setToCountCards(Card[] toCountCards) {
+        this.toCountCards = toCountCards;
+    }
+
+    public Card[] getToCountCards() {
+        return toCountCards;
     }
 
     public int getBank() {
@@ -27,7 +32,5 @@ public class Player {
         return name;
     }
 
-    public Card[] getArm() {
-        return arm;
-    }
+    public Card[] getArmCards() { return armCards; }
 }

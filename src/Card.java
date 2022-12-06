@@ -26,20 +26,20 @@ public class Card {
     }
 
     public void print() {
-        System.out.print(lear + " " + value);
+        System.out.print(lear + "/" + value + " ");
     }
 }
 
 enum Lear{
-    s,     //пика
-    c,     //креста
-    h,     //чирва
-    t      //бубна
+    Spds,       //пика
+    Clbs,        //креста
+    Hrts,       //чирва
+    Dmnd      //бубна
 }
 
 enum Value{
-    two,    three,    four,    five,
-    six,    seven,    eight,   nine,
-    ten,    jack,     queen,   king,
-    ace
+    Two,    Three,    Four,    Five,
+    Six,    Seven,    Eight,   Nine,
+    Ten,    Jack,     Queen,   King,
+    Ace
 }

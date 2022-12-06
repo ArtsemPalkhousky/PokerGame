@@ -3,6 +3,7 @@ public class Table {
     Card[] board = new Card[5];
     private int counter = 0;
 
+
     public Table() {
         counter = 0;
     }
@@ -20,14 +21,17 @@ public class Table {
         board[counter++] = card;
     }
 
+    public Card[] getBoard() {
+        return board;
+    }
+
     public void printBoard() {
         System.out.println("\n\n    BOARD:");
         for (int i = 0; i < 5; i++) {
-            if (board[i] != null){
+            if (board[i] != null) {
                 board[i].print();
                 System.out.print(" ");
-            }
-            else return;
+            } else return;
         }
     }
 }
