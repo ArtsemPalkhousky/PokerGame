@@ -26,15 +26,15 @@ public class Card {
     }
 
     public void print() {
-        System.out.print(lear + "/" + value + " ");
+        System.out.print(value + " " + lear + " ");
     }
 }
 
 enum Lear{
-    Spds,       //пика
-    Clbs,        //креста
-    Hrts,       //чирва
-    Dmnd      //бубна
+    S,       //пика
+    C,       //креста
+    H,       //чирва
+    D        //бубна
 }
 
 enum Value{

@@ -16,8 +16,13 @@ public class Player {
 
     public void setArmCards(Card[] armCards) { this.armCards = armCards; }
 
-    public void setToCountCards(Card[] toCountCards) {
-        this.toCountCards = toCountCards;
+    public void setToCountCards(Card[] boardCards) {
+        int i;
+        for (i = 0; i < 5; i++) {
+            toCountCards[i] = boardCards[i];
+        }
+        toCountCards[i++] = armCards[0];
+        toCountCards[i] = armCards[1];
     }
 
     public Card[] getToCountCards() {
@@ -32,5 +37,7 @@ public class Player {
         return name;
     }
 
-    public Card[] getArmCards() { return armCards; }
+    public Card[] getArmCards() {
+        return armCards;
+    }
 }

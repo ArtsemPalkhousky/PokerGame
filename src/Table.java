@@ -1,7 +1,7 @@
 public class Table {
     int bet;
     Card[] board = new Card[5];
-    private int counter = 0;
+    protected int counter = 0;
 
 
     public Table() {
@@ -26,7 +26,7 @@ public class Table {
     }
 
     public void printBoard() {
-        System.out.println("\n\n    BOARD:");
+        System.out.println("\n      BOARD: ");
         for (int i = 0; i < 5; i++) {
             if (board[i] != null) {
                 board[i].print();
