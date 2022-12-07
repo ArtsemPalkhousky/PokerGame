@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class gameMain {
     public static void main(String[] args) {
         int AmountOfPlayers = 3;
@@ -10,14 +9,7 @@ public class gameMain {
         }
 
         Scanner in = new Scanner(System.in);
-
         int j = 0;
-//        do {
-//            System.out.printf("Enter name of %d player\n", j + 1);
-//            players[j].setName(in.next());
-//            j++;
-//        } while(j < AmountOfPlayers); j = 0;
-
         Deck deck = new Deck();
         deck.shuffleIt();
         deck.shuffleIt();
@@ -54,7 +46,7 @@ public class gameMain {
         int[] AllResults = new int[AmountOfPlayers];
         int maxIndex = 0;
         for (Player player: players) {
-            int Result = countFinalCombination(player.getToCountCards());
+            int Result = countCombination(player.getToCountCards());
             AllResults[maxIndex] = Result;
             maxIndex++;
         }
@@ -78,10 +70,11 @@ public class gameMain {
         }
     }
 
-    public static int countFinalCombination(Card[] toCountCards) {
+
+    public static int countCombination(Card[] toCountCards) {
+        int[] bytesCombination = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         byte[] bytesValue = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         byte[] bytesLear = {0, 0, 0, 0};
-        byte[] bytesCombination = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         for (Card card : toCountCards) {
             bytesValue[card.getValue().ordinal()]++;
             bytesLear[card.getLear().ordinal()]++;
@@ -117,9 +110,13 @@ public class gameMain {
                             break;
                         } else {
                             if (bytesCombination[boards.Pair.ordinal()] == 1) {
-                                bytesCombination[boards.TwoPair.ordinal()] = 1; // Две пары
-                            } else
-                                bytesCombination[boards.Pair.ordinal()] = 1;    // Пара
+                                if (bytesCombination[boards.Pair.ordinal()] < j) {
+                                    bytesCombination[boards.TwoPair.ordinal()] = 1; // Две пары
+                                }
+                            }
+                            else {
+                                bytesCombination[boards.Pair.ordinal()] = 1;
+                            }
                         }
                     }
                 }
@@ -129,43 +126,32 @@ public class gameMain {
         //-----------------------------------------Для флешей и стритов-----------------------------------------------------
         boolean wasFlush = false;
         boolean wasStraight = false;
-        if (!wasPairCombination) {
-            for (int i = 0; i < 4; i++) {
-                if (bytesLear[i] == 5) {
-                    bytesCombination[boards.Flush.ordinal()] = 1;               // Флеш
-                    wasFlush = true;
-                    break;
-                }
+        for (int i = 0; i < 4; i++) {
+            if (bytesLear[i] == 5) {
+               bytesCombination[boards.Flush.ordinal()] = 1;               // Флеш
+               wasFlush = true;
+               break;
             }
-
-            //            two     three four five six seven   eight   nine   ten jack  queen king ace
-            //          { 0          1  2    3    4   5       6       7      8   9 }     10  11   12
-            //            0          1  0    1    1	  1 	  1 	  1 	 1   0       0   0    0  Index1 = 1  straight
-            //            0  Index++ 1  1    0    1	  1 	  1 	  1 	 1   0       0   0    0  Index1 = 2  straight
-            //            0  Index++ 1  1    1    0	  1 	  1 	  1 	 1   0       0   0    0  Index1 = 3  and no straight
-            //            0  Index++ 1  1    1    1	  0 	  1 	  1 	 1   0       0   0    0  Index1 = 4  and no straight
-            //            0  Index++ 1  1    1    1	  1 	  0 	  1 	 1   0       0   0    0  Index1 = 5  and no straight
-            //            0  Index++ 1  1    1    1	  1 	  1 	  0 	 1   0       0   0    0  Index1 = 6  straight
-            //            0  Index++ 1  1    1    1	  1 	  1 	  1 	 0   0       0   0    0  Index1 = 7  straight
-
-            wasStraight = false;
-            int Index = 1;
-            for (int i = 0; i < 9; i++) {
-                if (bytesValue[i] == 1) {
-                    while (bytesValue[i + Index] == 1) {
-                        Index++;
-                        if (Index == 5) {
-                            bytesCombination[boards.Straight.ordinal()]++;     // Стрит
-                            wasStraight = true;                                // bytesCombination[boards.Straight.ordinal()]
-                        }                                                      // can be from 1 to 3
+        }
+        int Index = 1;
+        for (int i = 0; i < 9; i++) {
+            if (bytesValue[i] == 1) {
+                while (bytesValue[i + Index] == 1) {
+                    Index++;
+                    if (Index == 5) {
+                       bytesCombination[boards.Straight.ordinal()]++;     // Стрит
+                       wasStraight = true;                                // bytesCombination[boards.Straight.ordinal()]
+                    }                                                     // can be from 1 to 3
+                    if (Index + i == 13) {
+                        break;
                     }
                 }
-                if (Index == 3 || Index == 4) {
-                    break;
-                }
-                else {
-                    Index = 1;
-                }
+            }
+            if (Index == 3 || Index == 4) {
+                break;
+            }
+            else {
+                Index = 1;
             }
         }
         if (wasStraight && wasFlush) {
@@ -173,17 +159,15 @@ public class gameMain {
                 bytesCombination[boards.RoyalFlush.ordinal()] = 1;             // Рояль Флеш
             }
         }
-
         //--------------------------------------------Для старшей карты-------------------------------------------------------
         if (!wasPairCombination && !wasStraight && !wasFlush) {
             bytesCombination[boards.HighCard.ordinal()] = 1;                   // Старшая карта
         }
-
-        for (int i = bytesCombination.length - 1; i >= 0; i--) {                   // return index of first highest Combination
+        for (int i = bytesCombination.length - 1; i >= 0; i--) {               // return index of first highest Combination
             if (bytesCombination[i] >= 1) {
                 return i;
             }
         }
-        return 1000;                                                           // never returns
+        return 1000;                                                           // error returns
     }
 }
